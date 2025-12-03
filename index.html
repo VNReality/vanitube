@@ -1,91 +1,312 @@
-<!-- Source: user's original file. File citation: fileciteturn0file0 -->
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>V-Tube - Search. Learn. Solve.</title>
-    <link rel="manifest" href="/vtube_pwa/manifest.json" />
-    <meta name="theme-color" content="#0a0a0a" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <link rel="apple-touch-icon" href="/vtube_pwa/icons/icon-192.png" />
-    <style>
-        /* (Kept the original styling — minor premium tweaks applied) */
-        *{margin:0;padding:0;box-sizing:border-box}
-        body{
-            font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
-            background:linear-gradient(135deg,#0f0f0f 0%,#050505 100%);
-            min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;
-            color:#fff;
-        }
-        .container{width:100%;max-width:900px;text-align:center;padding:28px;border-radius:20px;
-                   background:linear-gradient(180deg, rgba(255,153,51,0.03), rgba(255,153,51,0.01));
-                   border:1px solid rgba(255,153,51,0.06);box-shadow:0 20px 60px rgba(0,0,0,0.6)}
-        .logo{font-size:56px;font-weight:800;letter-spacing:-1px;
-              background:linear-gradient(135deg,#FF9933 0%,#FF8000 100%);
-              -webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px}
-        .tagline{color:rgba(255,255,255,0.9);font-size:18px;margin-bottom:28px;font-weight:300}
-        .search-container{background:#0f0f0f;border:2px solid rgba(255,153,51,0.14);border-radius:50px;padding:8px;
-                          box-shadow:0 16px 50px rgba(255,153,51,0.06);margin-bottom:28px;transition:all .25s ease}
-        .search-container:focus-within{box-shadow:0 25px 70px rgba(255,153,51,0.12);transform:translateY(-2px);border-color:#FFB366}
-        .search-box{display:flex;align-items:center;gap:12px;padding:0 12px}
-        .search-icon{font-size:22px;color:#FF9933}
-        .search-input{flex:1;border:none;outline:none;font-size:18px;padding:18px 8px;color:#ffffff;background:transparent}
-        .search-input::placeholder{color:#666}
-        .search-btn{background:linear-gradient(135deg,#FF9933 0%,#FF8000 100%);color:#000;border:none;padding:12px 26px;border-radius:36px;
-                    font-size:16px;font-weight:700;cursor:pointer;transition:all .22s ease}
-        .search-btn:hover{transform:scale(1.03);box-shadow:0 8px 20px rgba(255,153,51,0.3)}
-        .examples{color:rgba(255,255,255,0.82);font-size:14px;margin-bottom:28px}
-        .examples span{display:inline-block;margin:6px 8px;padding:6px 14px;background:rgba(255,153,51,0.06);border:1px solid rgba(255,153,51,0.12);border-radius:20px;cursor:pointer}
-        .features{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:18px;margin-top:24px}
-        .feature{background:rgba(255,153,51,0.03);backdrop-filter:blur(6px);padding:20px;border-radius:12px;border:1px solid rgba(255,153,51,0.06);color:white}
-        .value-prop{margin-top:34px;color:white;font-size:14px;opacity:0.95}
-        @media(max-width:600px){.logo{font-size:40px}.search-input{font-size:16px}.features{grid-template-columns:1fr}}
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>V-Tube — Search · Learn · Solve</title>
+
+  <!-- PWA hooks (keep manifest & apple meta) -->
+  <link rel="manifest" href="/vtube_pwa/manifest.json" />
+  <meta name="theme-color" content="#0a0a0a" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <link rel="apple-touch-icon" href="/vtube_pwa/icons/icon-192.png" />
+
+  <meta name="description" content="V-Tube — problem-focused video solutions. No fluff. High clarity." />
+
+  <style>
+    /* Mobile-first, black & orange premium theme */
+    :root{
+      --bg-1: #070707;
+      --bg-2: #0f0f0f;
+      --accent: #FF9933; /* orange */
+      --accent-2: #FF7A00;
+      --glass: rgba(255,153,51,0.06);
+      --muted: rgba(255,255,255,0.72);
+      --card-border: rgba(255,153,51,0.08);
+      --radius: 18px;
+      --safe-gap: 18px;
+    }
+
+    /* Prefers-reduced-motion respect */
+    @media (prefers-reduced-motion: no-preference) {
+      :root { --anim-speed: 280ms; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      :root { --anim-speed: 0ms; }
+    }
+
+    html,body{height:100%}
+    body{
+      margin:0;
+      min-height:100vh;
+      font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background:
+        radial-gradient(1200px 600px at 10% 10%, rgba(255,153,51,0.02), transparent 8%),
+        linear-gradient(180deg,var(--bg-1),var(--bg-2));
+      color:#fff;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      padding:env(safe-area-inset-top) 16px calc(env(safe-area-inset-bottom) + 90px) 16px;
+      display:flex;
+      align-items:flex-start;
+      justify-content:center;
+    }
+
+    .shell{
+      width:100%;
+      max-width:920px;
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+      margin:12px 0 36px;
+    }
+
+    /* Header / branding */
+    header.brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      margin-top:8px;
+    }
+    .logo-wrap{
+      width:64px;height:64px;border-radius:14px;
+      background:linear-gradient(135deg,var(--accent),var(--accent-2));
+      display:flex;align-items:center;justify-content:center;
+      box-shadow:0 8px 30px rgba(255,153,51,0.08), inset 0 -6px 18px rgba(0,0,0,0.18);
+      flex-shrink:0;
+    }
+    .logo-wrap .V{font-weight:800;font-size:28px;color:#0b0b0b;letter-spacing:-1px}
+    .brand-text{
+      display:flex;flex-direction:column;line-height:1;
+    }
+    .brand-text .title{font-size:20px;font-weight:800;letter-spacing:-0.6px}
+    .brand-text .sub{font-size:12px;color:var(--muted);margin-top:2px}
+
+    /* Main card */
+    main.card{
+      background:linear-gradient(180deg, rgba(255,153,51,0.02), rgba(255,153,51,0.01));
+      border-radius:var(--radius);
+      padding:18px;
+      border:1px solid var(--card-border);
+      box-shadow: 0 18px 50px rgba(0,0,0,0.6);
+      display:flex;
+      flex-direction:column;
+      gap:16px;
+    }
+
+    /* Search area */
+    .search {
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+    .search .input-wrap{
+      flex:1;
+      display:flex;
+      align-items:center;
+      background:rgba(255,255,255,0.02);
+      border-radius:100px;
+      padding:10px 12px;
+      border:1px solid rgba(255,153,51,0.06);
+      box-shadow: 0 8px 30px rgba(255,153,51,0.04);
+      transition:box-shadow var(--anim-speed) ease, transform var(--anim-speed) ease;
+    }
+    .input-wrap:focus-within{
+      box-shadow:0 20px 50px rgba(255,153,51,0.12);
+      transform:translateY(-3px);
+      border-color: rgba(255,153,51,0.16);
+    }
+    .search input{
+      border:0;background:transparent;color:#fff;font-size:16px;padding:10px 8px;outline:none;width:100%;
+    }
+    .search .cta{
+      background:linear-gradient(135deg,var(--accent),var(--accent-2));
+      color:#060606;border:none;padding:12px 18px;border-radius:999px;font-weight:700;font-size:15px;
+      box-shadow:0 10px 30px rgba(255,153,51,0.18);cursor:pointer;
+      flex-shrink:0;
+    }
+
+    /* Example chips */
+    .chips{display:flex;gap:10px;flex-wrap:wrap}
+    .chip{padding:8px 12px;border-radius:999px;background:rgba(255,153,51,0.05);border:1px solid rgba(255,153,51,0.08);
+      color:var(--muted);font-size:13px;cursor:pointer;transition:transform .18s ease}
+    .chip:active{transform:scale(.98)}
+
+    /* Feature tiles — visually bigger for touch */
+    .tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:6px}
+    .tile{
+      background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+      border-radius:12px;padding:14px;border:1px solid rgba(255,153,51,0.04);display:flex;gap:12px;align-items:center;
+      min-height:72px;
+    }
+    .tile .ico{font-size:20px;width:44px;height:44px;border-radius:10px;background:rgba(255,153,51,0.08);display:flex;align-items:center;justify-content:center}
+    .tile .text{font-size:14px}
+    .tile .text .t{font-weight:700;margin-bottom:4px}
+    .tile .text .s{color:var(--muted);font-size:13px}
+
+    /* Value prop footer */
+    .value{font-size:13px;color:var(--muted);text-align:center;padding-top:6px}
+
+    /* Bottom sticky toolbar for install / quick actions */
+    .bottom-toolbar{
+      position:fixed;left:0;right:0;bottom:env(safe-area-inset-bottom);display:flex;gap:12px;justify-content:center;padding:12px;
+      pointer-events:none;
+    }
+    .toolbar-inner{
+      width:calc(100% - 32px);max-width:920px;background:linear-gradient(90deg, rgba(255,153,51,0.03), rgba(255,153,51,0.01));
+      border-radius:14px;padding:8px 10px;display:flex;gap:8px;align-items:center;justify-content:space-between;border:1px solid var(--card-border);
+      pointer-events:all;box-shadow:0 18px 50px rgba(0,0,0,0.55);
+    }
+    .toolbar-inner button{background:transparent;border:0;color:var(--accent);font-weight:700;padding:10px 12px;border-radius:10px;cursor:pointer}
+
+    /* Larger screens - keep it nice */
+    @media(min-width:700px){
+      body{padding:40px}
+      .shell{margin-top:28px}
+      .brand-text .title{font-size:26px}
+      .logo-wrap{width:80px;height:80px;border-radius:18px}
+      .search input{font-size:18px}
+      .tiles{grid-template-columns:repeat(4,1fr)}
+    }
+
+    /* Accessibility */
+    .visually-hidden{position:absolute!important;height:1px;width:1px;overflow:hidden;clip:rect(1px,1px,1px,1px);white-space:nowrap}
+  </style>
 </head>
 <body>
-    <div class="container" role="main" aria-labelledby="brand">
-        <div id="brand" class="logo">V-Tube</div>
-        <div class="tagline">Search. Learn. Solve.</div>
+  <div class="shell" role="main" aria-labelledby="brand">
+    <header class="brand" id="brand">
+      <div class="logo-wrap" aria-hidden="true"><div class="V">V</div></div>
+      <div class="brand-text">
+        <div class="title">V-Tube</div>
+        <div class="sub">Search · Learn · Solve — one problem per video</div>
+      </div>
+    </header>
 
-        <div class="search-container" aria-label="search">
-            <div class="search-box">
-                <span class="search-icon" aria-hidden="true">🔍</span>
-                <input type="text" id="searchInput" class="search-input" placeholder="Type your doubt, problem, or concept..." aria-label="Search input">
-                <button class="search-btn" id="searchBtn">Search</button>
-            </div>
+    <main class="card" aria-labelledby="searchlabel">
+      <h1 id="searchlabel" class="visually-hidden">Search V-Tube</h1>
+
+      <!-- Search row -->
+      <div class="search" role="search" aria-label="Search V-Tube">
+        <div class="input-wrap" aria-hidden="false">
+          <svg style="width:18px;height:18px;margin-right:8px;opacity:.95" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+            <circle cx="11" cy="11" r="6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          <input id="q" type="search" placeholder="Type your doubt, problem or concept…" aria-label="Search input" autocomplete="off" />
         </div>
 
-        <div class="examples" aria-hidden="false">Try:
-            <span onclick="fillSearch('Quadratic equations step by step')">Quadratic equations</span>
-            <span onclick="fillSearch('Organic chemistry mechanisms')">Organic chemistry</span>
-            <span onclick="fillSearch('Physics numerical problems')">Physics numericals</span>
+        <button id="go" class="cta" aria-label="Search">Search</button>
+      </div>
+
+      <!-- chips -->
+      <div class="chips" aria-hidden="false" role="list">
+        <div class="chip" role="listitem" data-q="Quadratic equations step by step">Quadratic equations</div>
+        <div class="chip" role="listitem" data-q="Organic chemistry mechanisms">Organic chemistry</div>
+        <div class="chip" role="listitem" data-q="Physics numerical problems">Physics numericals</div>
+      </div>
+
+      <!-- tiles -->
+      <div class="tiles" aria-hidden="false">
+        <div class="tile" role="button" tabindex="0" aria-pressed="false">
+          <div class="ico" aria-hidden="true">🎯</div>
+          <div class="text"><div class="t">Problem-focused</div><div class="s">Every video solves one problem only</div></div>
         </div>
 
-        <div class="features" aria-hidden="false">
-            <div class="feature"><div class="feature-icon">🎯</div><div class="feature-title">Problem-Specific</div><div class="feature-desc">Every video solves one problem. No fluff.</div></div>
-            <div class="feature"><div class="feature-icon">✨</div><div class="feature-title">Zero Clutter</div><div class="feature-desc">No feed, no ads, no distractions.</div></div>
-            <div class="feature"><div class="feature-icon">🎓</div><div class="feature-title">Expert Creators</div><div class="feature-desc">Moderated, high-quality solutions.</div></div>
-            <div class="feature"><div class="feature-icon">⚡</div><div class="feature-title">Request Videos</div><div class="feature-desc">Can't find it? Request it. Get it in 24hrs.</div></div>
+        <div class="tile" role="button" tabindex="0" aria-pressed="false">
+          <div class="ico" aria-hidden="true">✨</div>
+          <div class="text"><div class="t">Zero clutter</div><div class="s">No feed, no distraction — straight learning</div></div>
         </div>
 
-        <div class="value-prop"><strong>Value over Views.</strong> Clarity over Clickbait. Learning without Noise.</div>
+        <div class="tile" role="button" tabindex="0" aria-pressed="false">
+          <div class="ico" aria-hidden="true">🎓</div>
+          <div class="text"><div class="t">Expert creators</div><div class="s">Curated, high-quality solutions</div></div>
+        </div>
+
+        <div class="tile" role="button" tabindex="0" aria-pressed="false">
+          <div class="ico" aria-hidden="true">⚡</div>
+          <div class="text"><div class="t">Request videos</div><div class="s">Ask & get within 24 hours</div></div>
+        </div>
+      </div>
+
+      <div class="value">Value over views. Clarity over clickbait.</div>
+    </main>
+  </div>
+
+  <!-- Bottom toolbar (install / quick actions) -->
+  <div class="bottom-toolbar" aria-hidden="false">
+    <div class="toolbar-inner" role="toolbar" aria-label="Quick actions">
+      <div style="display:flex;gap:8px;align-items:center">
+        <button id="installBtn" title="Install V-Tube">Install</button>
+        <button id="requestBtn" title="Request a video">Request</button>
+      </div>
+      <div style="color:var(--muted);font-size:13px">Tap to start learning</div>
     </div>
+  </div>
 
-    <script>
-        // small UX improvements + service worker registration
-        function fillSearch(text){document.getElementById('searchInput').value=text;document.getElementById('searchInput').focus()}
-        function handleSearch(){const q=document.getElementById('searchInput').value;if(q.trim()){alert('Coming Soon!\n\nYou searched for: '+q)}}
-        document.getElementById('searchInput').addEventListener('keypress',function(e){if(e.key==='Enter'){handleSearch()}})
-        document.getElementById('searchBtn').addEventListener('click', handleSearch);
+  <script>
+    // Basic interactions (kept small & conservative)
+    const input = document.getElementById('q');
+    const go = document.getElementById('go');
 
-        // Register service worker (if supported)
-        if('serviceWorker' in navigator){
-            navigator.serviceWorker.register('/vtube_pwa/sw.js')
-            .then(reg => console.log('ServiceWorker registered', reg))
-            .catch(err => console.warn('SW registration failed', err));
-        }
-    </script>
+    function doSearch(q){
+      q = (q || '').trim();
+      if(!q) {
+        input.focus();
+        return;
+      }
+      // Temporary behavior: show native alert (replace with real navigation/API)
+      alert('Search: ' + q);
+    }
+
+    go.addEventListener('click', ()=> doSearch(input.value));
+    input.addEventListener('keydown', e => { if(e.key === 'Enter') doSearch(input.value); });
+
+    document.querySelectorAll('.chip').forEach(c => {
+      c.addEventListener('click', ()=> { input.value = c.dataset.q; input.focus(); });
+    });
+
+    // Keyboard accessible tiles
+    document.querySelectorAll('.tile').forEach(t => {
+      t.addEventListener('keydown', e => { if(e.key === 'Enter' || e.key === ' ') t.click(); });
+      t.addEventListener('click', ()=> {
+        // Provide simple feedback
+        const title = t.querySelector('.t')?.textContent || 'Feature';
+        alert(title);
+      });
+    });
+
+    // Service worker registration (keeps your PWA)
+    if('serviceWorker' in navigator){
+      navigator.serviceWorker.register('/vtube_pwa/sw.js').catch(()=>{/* silent */});
+    }
+
+    // install prompt handling (basic)
+    let deferredPrompt;
+    const installBtn = document.getElementById('installBtn');
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      installBtn.style.display = 'inline-block';
+    });
+
+    installBtn.addEventListener('click', async () => {
+      if(!deferredPrompt) return alert('Install not available');
+      deferredPrompt.prompt();
+      const choice = await deferredPrompt.userChoice;
+      deferredPrompt = null;
+      installBtn.style.display = 'none';
+      if(choice.outcome === 'accepted') {
+        console.log('User installed app');
+      }
+    });
+
+    // small accessibility improvement: focus management
+    document.addEventListener('DOMContentLoaded', ()=> {
+      // ensure first interactive element is focused for keyboard users
+      input.setAttribute('autocomplete','off');
+    });
+  </script>
 </body>
 </html>
